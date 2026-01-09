@@ -6,7 +6,6 @@ router.get("/", taskController.getAllTasks);
 router.get("/:id", taskController.getTaskById);
 router.post("/", taskController.createTask);
 
-// MongoDB comments
 router.post("/:id/comments", taskController.addComment);
 router.get("/:id/comments", taskController.getComments);
 

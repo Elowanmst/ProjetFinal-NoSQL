@@ -4,7 +4,7 @@ const redis = require("./src/services/redis");
 const connectMongo = require("./src/services/mongo");
 
 async function main() {
-  // ======= PostgreSQL Tasks =======
+  // ------- tache PostgreSQL -------
   console.log("Seeding PostgreSQL tasks...");
   const tasksData = [
     { title: "Faire les courses", description: "Acheter fruits et légumes", status: "pending" },
@@ -12,23 +12,23 @@ async function main() {
     { title: "Réviser Node.js", description: "Pratiquer Prisma et Express", status: "pending" },
   ];
 
-  await prisma.task.deleteMany(); // clear table
+  await prisma.task.deleteMany(); 
   const tasks = await prisma.task.createMany({ data: tasksData });
   console.log(`Created ${tasks.count} tasks.`);
 
-  // ======= Redis Cache & Views =======
+  // ------- Redis -------
   console.log("Seeding Redis cache and view counters...");
   const allTasks = await prisma.task.findMany();
-  await redis.set("tasks:all", JSON.stringify(allTasks)); // cache
+  await redis.set("tasks:all", JSON.stringify(allTasks)); 
   for (const task of allTasks) {
-    await redis.set(`task:${task.id}:views`, 0); // compteur initial
+    await redis.set(`task:${task.id}:views`, 0); 
   }
 
-  // ======= MongoDB Comments =======
+  // ------- commentaire MongoDB -------
   console.log("Seeding MongoDB comments...");
   const db = await connectMongo();
   const commentsCollection = db.collection("comments");
-  await commentsCollection.deleteMany({}); // clear collection
+  await commentsCollection.deleteMany({}); 
 
   const commentsData = [
     { taskId: 1, author: "Alice", content: "N’oublie pas les pommes", createdAt: new Date() },
