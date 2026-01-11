@@ -64,6 +64,49 @@ const createTask = async (req, res) => {
 };
 
 
+// PUT /tasks/:id → modification de la tâche
+
+const updateTask = async (req, res) => {
+  try {
+    const id = parseInt(req.params.id);
+    const { title, description, status } = req.body;
+
+    const task = await prisma.task.update({
+      where: { id },
+      data: { title, description, status },
+    });
+
+    await redis.del("tasks:all");
+
+    res.json(task);
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ error: "Internal server error" });
+  }
+};
+
+
+// DELETE /tasks/:id → suppression de la tâche
+
+const deleteTask = async (req, res) => {
+  try {
+    const id = parseInt(req.params.id);
+
+    await prisma.task.delete({
+      where: { id },
+    });
+
+    await redis.del("tasks:all");
+    await redis.del(`task:${id}:views`);
+
+    res.status(204).send();
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ error: "Internal server error" });
+  }
+};
+
+
 
 // POST /tasks/:id/comments
 
@@ -108,6 +151,8 @@ module.exports = {
   getAllTasks,
   getTaskById,
   createTask,
+  updateTask,
+  deleteTask,
   addComment,
   getComments,
 };
