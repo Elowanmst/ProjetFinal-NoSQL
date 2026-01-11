@@ -1,4 +1,4 @@
-# 📐 Document d'Architecture - Gestionnaire de Tâches
+# Document d'Architecture - Gestionnaire de Tâches
 
 ## 1. Vue d'ensemble de l'architecture
 
@@ -59,10 +59,10 @@ model Task {
 ```
 
 **Pourquoi PostgreSQL pour les tâches ?**
-- ✅ **Intégrité des données** : Les tâches nécessitent des contraintes strictes (statut valide, champs obligatoires)
-- ✅ **Transactions ACID** : Garantit la cohérence lors des mises à jour
-- ✅ **Requêtes complexes** : Permet facilement le tri, filtrage et jointures futures
-- ✅ **Relations** : Facilite l'ajout de fonctionnalités (assignation d'utilisateurs, catégories, etc.)
+- **Intégrité des données** : Les tâches nécessitent des contraintes strictes (statut valide, champs obligatoires)
+- **Transactions ACID** : Garantit la cohérence lors des mises à jour
+- **Requêtes complexes** : Permet facilement le tri, filtrage et jointures futures
+- **Relations** : Facilite l'ajout de fonctionnalités (assignation d'utilisateurs, catégories, etc.)
 
 ---
 
@@ -99,11 +99,11 @@ Index:
 ```
 
 **Pourquoi MongoDB pour les commentaires ?**
-- ✅ **Flexibilité du schéma** : Les commentaires peuvent évoluer (ajout de réactions, mentions, etc.)
-- ✅ **Performance en lecture** : Récupération rapide de tous les commentaires d'une tâche
-- ✅ **Scalabilité horizontale** : Facile à distribuer si le nombre de commentaires augmente
-- ✅ **Pas de jointures** : Les commentaires sont indépendants, pas besoin de relations complexes
-- ✅ **Volume élevé** : MongoDB gère mieux un grand nombre de documents non structurés
+- **Flexibilité du schéma** : Les commentaires peuvent évoluer (ajout de réactions, mentions, etc.)
+- **Performance en lecture** : Récupération rapide de tous les commentaires d'une tâche
+- **Scalabilité horizontale** : Facile à distribuer si le nombre de commentaires augmente
+- **Pas de jointures** : Les commentaires sont indépendants, pas besoin de relations complexes
+- **Volume élevé** : MongoDB gère mieux un grand nombre de documents non structurés
 
 ---
 
@@ -134,11 +134,11 @@ task:3:views = "23"
 ```
 
 **Pourquoi Redis pour le cache et les statistiques ?**
-- ✅ **Performance extrême** : Temps de réponse < 1ms pour les lectures
-- ✅ **Cache volatile** : TTL automatique évite les données obsolètes
-- ✅ **Compteurs atomiques** : `INCR` est thread-safe pour les compteurs de vues
-- ✅ **Réduction de charge DB** : Évite les requêtes répétées sur PostgreSQL
-- ✅ **Statistiques temps réel** : Parfait pour les métriques (vues, popularité, etc.)
+- **Performance extrême** : Temps de réponse < 1ms pour les lectures
+- **Cache volatile** : TTL automatique évite les données obsolètes
+- **Compteurs atomiques** : `INCR` est thread-safe pour les compteurs de vues
+- **Réduction de charge DB** : Évite les requêtes répétées sur PostgreSQL
+- **Statistiques temps réel** : Parfait pour les métriques (vues, popularité, etc.)
 
 ---
 
@@ -154,20 +154,20 @@ task:3:views = "23"
 
 ### **5.2 Avantages de cette architecture**
 
-✅ **Performance optimale**
+**Performance optimale**
 - Cache Redis réduit les requêtes PostgreSQL pour `GET /tasks`
 - MongoDB gère efficacement des milliers de commentaires sans impact sur PostgreSQL
 
-✅ **Scalabilité**
+**Scalabilité**
 - PostgreSQL : Scaling pour les tâches critiques
 - MongoDB : Scaling pour les commentaires
 - Redis : Cluster Redis pour le cache distribué
 
-✅ **Flexibilité**
+**Flexibilité**
 - Ajout de champs aux commentaires sans migration PostgreSQL
 - Ajout de nouveaux types de cache sans modifier le schéma SQL
 
-✅ **Isolation des pannes**
+**Isolation des pannes**
 - Si Redis tombe, l'API fonctionne toujours (sans cache)
 - Si MongoDB est indisponible, les tâches restent accessibles
 
@@ -242,7 +242,7 @@ task:3:views = "23"
 
 ---
 
-## 📊 Conclusion
+## Conclusion
 
 Cette architecture multi-bases exploite les forces de chaque technologie :
 - **PostgreSQL** pour la fiabilité et l'intégrité des données critiques
