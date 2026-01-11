@@ -10,5 +10,7 @@ router.delete("/:id", taskController.deleteTask);
 
 router.post("/:id/comments", taskController.addComment);
 router.get("/:id/comments", taskController.getComments);
+router.put("/:id/comments/:commentId", taskController.updateComment);
+router.delete("/:id/comments/:commentId", taskController.deleteComment);
 
 module.exports = router;

@@ -1,6 +1,7 @@
 const prisma = require("../services/prisma");
 const redis = require("../services/redis");
 const connectMongo = require("../services/mongo");
+const { ObjectId } = require("mongodb");
 
 
 // GET /tasks -> toutes les tâches avec Redis
@@ -147,6 +148,54 @@ const getComments = async (req, res) => {
   }
 };
 
+
+// PUT /tasks/:id/comments/:commentId → modification d'un commentaire
+
+const updateComment = async (req, res) => {
+  try {
+    const commentId = req.params.commentId;
+    const { author, content } = req.body;
+
+    const db = await connectMongo();
+    const result = await db.collection("comments").updateOne(
+      { _id: new ObjectId(commentId) },
+      { $set: { author, content, updatedAt: new Date() } }
+    );
+
+    if (result.matchedCount === 0) {
+      return res.status(404).json({ error: "Comment not found" });
+    }
+
+    res.json({ message: "Comment updated successfully" });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ error: "Internal server error" });
+  }
+};
+
+
+// DELETE /tasks/:id/comments/:commentId → suppression d'un commentaire
+
+const deleteComment = async (req, res) => {
+  try {
+    const commentId = req.params.commentId;
+
+    const db = await connectMongo();
+    const result = await db.collection("comments").deleteOne({
+      _id: new ObjectId(commentId),
+    });
+
+    if (result.deletedCount === 0) {
+      return res.status(404).json({ error: "Comment not found" });
+    }
+
+    res.status(204).send();
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ error: "Internal server error" });
+  }
+};
+
 module.exports = {
   getAllTasks,
   getTaskById,
@@ -155,4 +204,6 @@ module.exports = {
   deleteTask,
   addComment,
   getComments,
+  updateComment,
+  deleteComment,
 };
