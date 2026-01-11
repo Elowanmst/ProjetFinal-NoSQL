@@ -1,87 +1,117 @@
-# Gestionnaire de tâches (Backend multi-bases)
+﻿#  Gestionnaire de Tâches - Backend Multi-Bases
 
-## Description
+API REST pour la gestion de tâches utilisant une architecture polyglotte avec PostgreSQL, MongoDB et Redis.
 
-Backend pour la gestion de tâches utilisant PostgreSQL, Redis et MongoDB avec Node.js et Prisma.
+##  Démarrage rapide
 
-- PostgreSQL → stockage des tâches
-- Redis → cache et compteur de vues
-- MongoDB → commentaires
-
-
-## Prérequis
-
-- Node.js ≥ 18
+### Prérequis
+- Node.js  18
 - Docker & Docker Compose
-- Git
-- VS Code (optionnel)
-- Postman ou curl pour tester l’API
 
+### Installation
 
-## Installation
-
-1. Cloner le projet
-
-
-## installations des dependances 
 ```bash
-npm install -y
-```
+# 1. Installer les dépendances
+npm install
 
-## creation du .env à la racine 
-```bash
+# 2. Créer le fichier .env à la racine
 DATABASE_URL="postgresql://user:password@localhost:5432/tasksdb"
 MONGO_URL="mongodb://localhost:27017"
 REDIS_URL="redis://localhost:6379"
-```
 
-## lancement docker
-```bash
+# 3. Lancer Docker
 docker-compose up -d
-```
 
+# 4. Exécuter la migration Prisma
+npx prisma migrate dev --name init
 
-## execution de la migration prisma 
-```bash
-npx prisma migrate dev --name init 
-```
-
-
-## executé les données de test avec seed
-```bash
+# 5. Insérer les données de test
 node seed.js
-```
 
-
-## lancement du serveur 
-```bash
+# 6. Lancer le serveur
 npm run dev
 ```
 
-## test à faire 
-### Tâches
+Le serveur démarre sur `http://localhost:3000` 
+
+##  Documentation
+
+- **[API_DOCUMENTATION.md](API_DOCUMENTATION.md)** - Guide complet de l'API avec exemples
+- **[ARCHITECTURE.md](ARCHITECTURE.md)** - Architecture et justification des choix techniques
+
+##  Technologies utilisées
+
+- **Node.js** + Express.js - Serveur API
+- **PostgreSQL** + Prisma - Stockage des tâches
+- **MongoDB** - Stockage des commentaires
+- **Redis** - Cache et statistiques
+
+##  Structure du projet
+
+```
+src/
+ app.js                  # Point d'entrée
+ controllers/            # Logique métier
+ routes/                 # Définition des routes
+ middleware/             # Validation des données
+ services/               # Connexions aux bases de données
+```
+
+##  Tests rapides
+
+**Créer une tâche**
 ```bash
 curl -X POST http://localhost:3000/tasks \
 -H "Content-Type: application/json" \
--d '{"title":"Test", "description":"Faire quelque chose", "status":"pending"}'
+-d '{\"title\":\"Ma tâche\", \"description\":\"Description\", \"status\":\"pending\"}'
 ```
 
-### Commentaires avec MongoDB
+**Lister les tâches**
+```bash
+curl http://localhost:3000/tasks
+```
 
-#### ajouter un commentaire
+**Ajouter un commentaire**
 ```bash
 curl -X POST http://localhost:3000/tasks/1/comments \
 -H "Content-Type: application/json" \
--d '{"author":"Alice","contenue":"important!"}'
+-d '{\"author\":\"Alice\", \"content\":\"Super tâche !\"}'
 ```
 
-#### lister les commentaires
+**Vérifier Redis**
 ```bash
-curl http://localhost:3000/tasks/1/comments
-```
-
-### Vérification de Redis
-```bash
-docker exec -it redis redis-cli GET "task:1:views"
 docker exec -it redis redis-cli GET "tasks:all"
+docker exec -it redis redis-cli GET "task:1:views"
 ```
+
+##  Commandes utiles
+
+```bash
+# Arrêter Docker
+docker-compose down
+
+# Redémarrer complètement
+docker-compose down -v
+docker-compose up -d
+npx prisma migrate dev
+node seed.js
+
+# Voir les logs
+docker logs postgres
+docker logs mongo
+docker logs redis
+```
+
+##  Fonctionnalités
+
+-  CRUD complet sur les tâches
+-  CRUD complet sur les commentaires
+-  Validation des données
+-  Gestion des erreurs (400, 404, 500)
+-  Cache Redis avec TTL
+-  Compteur de vues par tâche
+-  Suppression en cascade
+
+##  Auteur
+
+Elowan Mestres
