@@ -5,7 +5,6 @@ const execPromise = util.promisify(exec);
 
 const baseUrl = 'http://localhost:3000';
 
-// Couleurs pour le terminal
 const colors = {
   reset: '\x1b[0m',
   cyan: '\x1b[36m',
@@ -61,7 +60,6 @@ async function main() {
   log('========================================', 'cyan');
   console.log('');
 
-  // Vérifier que le serveur est lancé
   log('Vérification du serveur...', 'magenta');
   try {
     await request(`${baseUrl}/tasks`);

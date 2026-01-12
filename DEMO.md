@@ -18,10 +18,10 @@ Démontrer que :
 ### Lancer la démo automatique
 
 ```powershell
-# S'assurer que le serveur est lancé
+
 npm run dev
 
-# Dans un autre terminal, lancer la démo
+
 node demo.js
 ```
 

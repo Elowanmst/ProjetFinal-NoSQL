@@ -77,7 +77,7 @@ model Task {
   "author": "Alice",
   "content": "N'oublie pas les pommes",
   "createdAt": ISODate("2026-01-11T10:45:00.000Z"),
-  "updatedAt": ISODate("2026-01-11T14:30:00.000Z")  // Optionnel, ajouté lors des mises à jour
+  "updatedAt": ISODate("2026-01-11T14:30:00.000Z")  
 }
 ```
 
