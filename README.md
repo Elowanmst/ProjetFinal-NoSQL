@@ -36,7 +36,6 @@ Le serveur démarre sur `http://localhost:3000`
 
 ##  Documentation
 
-- **[API_DOCUMENTATION.md](API_DOCUMENTATION.md)** - Guide complet de l'API avec exemples
 - **[ARCHITECTURE.md](ARCHITECTURE.md)** - Architecture et justification des choix techniques
 
 ##  Technologies utilisées
@@ -112,6 +111,6 @@ docker logs redis
 -  Compteur de vues par tâche
 -  Suppression en cascade
 
-##  Auteur
+##  @Auteur
 
-Elowan Mestres
+Anthony SKRZYPCZAK & Elowan MESTRES
